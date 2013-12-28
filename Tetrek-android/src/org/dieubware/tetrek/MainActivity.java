@@ -1,4 +1,4 @@
-package org.gwenn.blokenn;
+package org.dieubware.tetrek;
 
 import org.dieubware.tetrek.BlokennGame;
 
