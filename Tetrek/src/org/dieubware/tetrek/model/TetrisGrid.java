@@ -1,6 +1,7 @@
 package org.dieubware.tetrek.model;
 
 import org.dieubware.jbrik.Point;
+import org.dieubware.jbrik.ScoreManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +45,7 @@ public class TetrisGrid extends Grid {
 	private boolean	moveFirst = false;
 	private boolean pieceChanged = true;
 	
-	
+	private ScoreManager scoreManager;
 
 	private List<PieceType> nextPieces;
 
@@ -52,6 +53,7 @@ public class TetrisGrid extends Grid {
 		super(1, WIDTH, HEIGHT, false);
 		currentPiece = new TetrisPiece();
 		nextPieces = new ArrayList<PieceType>();
+		scoreManager = new ScoreManager();
 	}
 
 	public void act() {
@@ -325,6 +327,10 @@ public class TetrisGrid extends Grid {
 	public List<PieceType> getNextPieces() {
 		// TODO Auto-generated method stub
 		return nextPieces;
+	}
+
+	public ScoreManager getScoreManager() {
+		return scoreManager;
 	}
 
 }

@@ -3,6 +3,7 @@ package org.dieubware.tetrek.actors;
 import org.dieubware.tetrek.model.TetrisGrid;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -17,6 +18,7 @@ public class HUDActor extends Actor {
 	private int 			cellWidth;
 	private int 			cellHeight;
 	private ShapeRenderer	shapeRenderer;
+	private BitmapFont		font;
 
 	public HUDActor(int gridWidth, int gridHeight, float width, float height) {
 		super();
@@ -33,6 +35,7 @@ public class HUDActor extends Actor {
 		grid = new Color[gridWidth*gridHeight];
 			for(int i = 0; i< grid.length; i++)
 				grid[i] = Color.GRAY;
+		font = new BitmapFont();
 	}
 	
 	@Override
@@ -54,6 +57,9 @@ public class HUDActor extends Actor {
 		}
 		shapeRenderer.end();
 		batch.begin();
+		font.draw(batch, "Score : ", getX()+20, 200);
+		font.draw(batch, "Level : ", getX()+20, 150);
+		font.draw(batch, "Lines : ", getX()+20, 100);
 
 
 	}
