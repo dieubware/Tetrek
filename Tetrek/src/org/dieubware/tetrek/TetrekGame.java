@@ -7,10 +7,11 @@ import com.badlogic.gdx.utils.Scaling;
 import org.dieubware.tetrek.listeners.StageKeyListener;
 import org.dieubware.tetrek.model.TetrisGrid;
 import org.dieubware.tetrek.observers.ModelObserver;
+import org.dieubware.tetrek.observers.ScoreObserver;
 import org.dieubware.tetrek.screen.GameScreen;
 
 
-public class BlokennGame extends Game {
+public class TetrekGame extends Game {
 
 	private GameScreen game;
 	//private TitleScreen title;
@@ -23,9 +24,11 @@ public class BlokennGame extends Game {
 
 		game = new GameScreen(this);
 		game.setTimeManager(new TimeManager(model));
-		ModelObserver obs = new ModelObserver();
-		obs.setGridActor(game.getGridActor(), game.getHudActor());
-		model.addObserver(obs);
+		ModelObserver mObs = new ModelObserver();
+		ScoreObserver sObs = new ScoreObserver(game.getHudActor());
+		mObs.setGridActor(game.getGridActor(), game.getHudActor());
+		model.addObserver(mObs);
+		model.getScoreManager().addObserver(sObs);
 		setScreen(game);
 		game.getStage().addListener(new StageKeyListener(model, game.getWidth(), game.getHeight()));
 		model.startGame();

@@ -1,6 +1,6 @@
 package org.dieubware.tetrek;
 
-import org.dieubware.tetrek.BlokennGame;
+import org.dieubware.tetrek.TetrekGame;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
@@ -13,6 +13,6 @@ public class Main {
 		cfg.width = 500;
 		cfg.height = 550;
 		
-		new LwjglApplication(new BlokennGame(), cfg);
+		new LwjglApplication(new TetrekGame(), cfg);
 	}
 }

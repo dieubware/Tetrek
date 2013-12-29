@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
-import org.dieubware.tetrek.BlokennGame;
+import org.dieubware.tetrek.TetrekGame;
 import org.dieubware.tetrek.TimeManager;
 import org.dieubware.tetrek.actors.GridActor;
 import org.dieubware.tetrek.actors.HUDActor;
@@ -29,13 +29,13 @@ public class GameScreen implements Screen {
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Stage stage;
-	private BlokennGame game;
+	private TetrekGame game;
 	private TimeManager timeManager;
 	private GridActor gridActor;
 	private HUDActor hudActor;
 	private int hudWidth;
 	
-	public GameScreen(BlokennGame blokennGame) {
+	public GameScreen(TetrekGame blokennGame) {
 		this.game = blokennGame;
 
 		w = Gdx.graphics.getWidth();

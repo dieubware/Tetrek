@@ -46,7 +46,8 @@ public class TetrisGrid extends Grid {
 	private boolean pieceChanged = true;
 	
 	private ScoreManager scoreManager;
-
+	private int multiplier= 1;
+	
 	private List<PieceType> nextPieces;
 
 	public TetrisGrid() {
@@ -156,11 +157,20 @@ public class TetrisGrid extends Grid {
 
 	private void endOfPiece() {
 
-		this.checkForLines();
+		int nbLines = this.checkForLines();
+		if(nbLines == 0) {
+			multiplier = 1;
+		}
+		else {
+			multiplier++;
+			scoreManager.addOtherScore("lines", nbLines);
+			scoreManager.addScore(10*nbLines*multiplier);
+		}
 		addPiece(nextPieces.get(0));
 		nextPieces.add(0, PieceType.random());
 		pieceChanged = true;
-		System.out.println("Reached bottom");
+		setFall= false;
+		
 	}
 
 	/**
@@ -180,6 +190,7 @@ public class TetrisGrid extends Grid {
 
 		return canFall;
 	}
+	
 
 
 	/**
@@ -227,7 +238,7 @@ public class TetrisGrid extends Grid {
 				piece.move(direction);
 				//Re fill
 				for(Point p : piece.points) {
-					if(getIndex(p.x + direction,p.y) != -1)
+					if(getIndex(p.x,p.y) != -1)
 						grid[getIndex(p)] = currentPiece.getPieceColor();
 				}
 			}

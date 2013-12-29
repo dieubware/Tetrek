@@ -1,6 +1,6 @@
 package org.dieubware.tetrek;
 
-import org.dieubware.tetrek.BlokennGame;
+import org.dieubware.tetrek.TetrekGame;
 
 import android.os.Bundle;
 
@@ -15,6 +15,6 @@ public class MainActivity extends AndroidApplication {
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
         cfg.useGL20 = false;
         
-        initialize(new BlokennGame(), cfg);
+        initialize(new TetrekGame(), cfg);
     }
 }

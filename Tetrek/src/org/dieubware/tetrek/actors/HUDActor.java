@@ -19,6 +19,7 @@ public class HUDActor extends Actor {
 	private int 			cellHeight;
 	private ShapeRenderer	shapeRenderer;
 	private BitmapFont		font;
+	private int score, lines, level;
 
 	public HUDActor(int gridWidth, int gridHeight, float width, float height) {
 		super();
@@ -57,9 +58,9 @@ public class HUDActor extends Actor {
 		}
 		shapeRenderer.end();
 		batch.begin();
-		font.draw(batch, "Score : ", getX()+20, 200);
-		font.draw(batch, "Level : ", getX()+20, 150);
-		font.draw(batch, "Lines : ", getX()+20, 100);
+		font.draw(batch, "Score : " + score, getX()+10, 200);
+		font.draw(batch, "Level : " + level, getX()+10, 150);
+		font.draw(batch, "Lines : " + lines, getX()+10, 100);
 
 
 	}
@@ -104,5 +105,15 @@ public class HUDActor extends Actor {
 				break;
 		}
 		return realColor;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+	public void setLines(int lines) {
+		this.lines = lines;
+	}
+	public void setLevel(int level) {
+		this.level = level;
 	}
 }
