@@ -19,7 +19,7 @@ public class ScoreObserver implements Observer {
 		ScoreManager sm = (ScoreManager)o;
 		hudActor.setScore(sm.getScore());
 		hudActor.setLines(sm.getOtherScore("lines"));
-		
+		hudActor.setLevel(sm.getOtherScore("level"));
 	}
 
 }

@@ -19,6 +19,7 @@ import org.dieubware.tetrek.TetrekGame;
 import org.dieubware.tetrek.TimeManager;
 import org.dieubware.tetrek.actors.GridActor;
 import org.dieubware.tetrek.actors.HUDActor;
+import org.dieubware.tetrek.actors.MenuActor;
 
 public class GameScreen implements Screen {
 
@@ -33,7 +34,9 @@ public class GameScreen implements Screen {
 	private TimeManager timeManager;
 	private GridActor gridActor;
 	private HUDActor hudActor;
+	private MenuActor menuActor;
 	private int hudWidth;
+	private boolean gameStarted;
 	
 	public GameScreen(TetrekGame blokennGame) {
 		this.game = blokennGame;
@@ -46,23 +49,27 @@ public class GameScreen implements Screen {
 		if(cellSize < hudSize/4)
 			hudSize = cellSize*4;
 		hudActor = new HUDActor(4,4,hudSize, hudSize);
+		menuActor = new MenuActor((int)w, (int)h);
 	}
 
 	@Override
 	public void render(float delta) {
-		timeManager.addTime(delta);
-		if(Gdx.input.isKeyPressed(Keys.DOWN)
-				|| Gdx.input.isKeyPressed(Keys.RIGHT)
-				|| Gdx.input.isKeyPressed(Keys.LEFT)
-				|| Gdx.input.isTouched()) {
-			timeManager.timeKeyPressed(delta);
+		if(gameStarted) {
+			timeManager.addTime(delta);
+			if(Gdx.input.isKeyPressed(Keys.DOWN)
+					|| Gdx.input.isKeyPressed(Keys.RIGHT)
+					|| Gdx.input.isKeyPressed(Keys.LEFT)
+					|| Gdx.input.isTouched()) {
+				timeManager.timeKeyPressed(delta);
+			}
 		}
-		
 		Gdx.gl.glClearColor(0f, 0f, 0.2f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glEnable(GL10.GL_BLEND);
 		batch.setProjectionMatrix(camera.combined);
 
 		batch.begin();
+		
 		//batch.draw(background, w/2 - background.getWidth()/2, h/2 - background.getHeight()/2);
 		batch.end();
 
@@ -92,6 +99,7 @@ public class GameScreen implements Screen {
 
 		stage.addActor(gridActor);
 		stage.addActor(hudActor);
+		stage.addActor(menuActor);
 		hudActor.setX(gridActor.getWidth());
 		hudActor.setY(h-hudActor.getHeight());
 

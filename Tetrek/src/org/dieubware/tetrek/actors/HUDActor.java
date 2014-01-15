@@ -58,7 +58,8 @@ public class HUDActor extends Actor {
 		}
 		shapeRenderer.end();
 		batch.begin();
-		font.draw(batch, "Score : " + score, getX()+10, 200);
+		font.draw(batch, "Score : " , getX()+10, 200);
+		font.draw(batch, String.valueOf(score), getX()+10, 175);
 		font.draw(batch, "Level : " + level, getX()+10, 150);
 		font.draw(batch, "Lines : " + lines, getX()+10, 100);
 

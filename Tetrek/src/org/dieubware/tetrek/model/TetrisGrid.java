@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.dieubware.jbrik.Grid;
+import org.dieubware.tetrek.TimeManager;
 import org.dieubware.tetrek.model.TetrisPiece.PieceType;
 
 import com.badlogic.gdx.Gdx;
@@ -46,7 +47,7 @@ public class TetrisGrid extends Grid {
 	private boolean pieceChanged = true;
 	
 	private ScoreManager scoreManager;
-	private int multiplier= 1;
+	private int multiplier = 1;
 	
 	private List<PieceType> nextPieces;
 
@@ -55,7 +56,10 @@ public class TetrisGrid extends Grid {
 		currentPiece = new TetrisPiece();
 		nextPieces = new ArrayList<PieceType>();
 		scoreManager = new ScoreManager();
+
+		scoreManager.setOtherScore("level", 1);
 	}
+	
 
 	public void act() {
 		if(setMoveRight)
@@ -103,7 +107,8 @@ public class TetrisGrid extends Grid {
 	public void directFall() {
 		//delete old piece
 		for(Point p : currentPiece.points) {
-			grid[getIndex(p)] = EMPTY;
+			if(getIndex(p) != -1)
+				grid[getIndex(p)] = EMPTY;
 		}
 		while(canFall(currentPiece)) {
 			currentPiece.fall();
@@ -162,9 +167,15 @@ public class TetrisGrid extends Grid {
 			multiplier = 1;
 		}
 		else {
-			multiplier++;
+			multiplier+=nbLines;
 			scoreManager.addOtherScore("lines", nbLines);
 			scoreManager.addScore(10*nbLines*multiplier);
+		
+			int level = scoreManager.getOtherScore("level");
+			if(scoreManager.getOtherScore("lines") > level*(10+level)) {
+				scoreManager.addOtherScore("level", 1);
+			}
+			
 		}
 		addPiece(nextPieces.get(0));
 		nextPieces.add(0, PieceType.random());
@@ -344,4 +355,7 @@ public class TetrisGrid extends Grid {
 		return scoreManager;
 	}
 
+	public int getLevel() {
+		return scoreManager.getOtherScore("level");
+	}
 }

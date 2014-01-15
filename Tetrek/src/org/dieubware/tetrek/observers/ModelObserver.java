@@ -3,6 +3,7 @@ package org.dieubware.tetrek.observers;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.dieubware.tetrek.TimeManager;
 import org.dieubware.tetrek.actors.GridActor;
 import org.dieubware.tetrek.actors.HUDActor;
 import org.dieubware.tetrek.model.TetrisGrid;
@@ -14,14 +15,17 @@ public class ModelObserver implements Observer {
 
 	GridActor gridActor;
 	HUDActor hudActor;
-	
-	public ModelObserver() {
+	TimeManager timeManager;
+	private int level;
+	public ModelObserver(TimeManager tm) {
+		timeManager = tm;
 		
 	}
 	
 	public void setGridActor(GridActor gridActor, HUDActor hudActor) {
 		this.gridActor = gridActor;
 		this.hudActor = hudActor;
+		
 	}
 	
 	@Override
@@ -38,6 +42,10 @@ public class ModelObserver implements Observer {
 			}
 			hudActor.setGrid(intGrid);
 			((TetrisGrid)grid).setPieceChanged(false);
+			level = ((TetrisGrid)grid).getLevel();
+			if(level < 10) {
+				timeManager.setLevel(level);
+			}
 		}
 		
 	}

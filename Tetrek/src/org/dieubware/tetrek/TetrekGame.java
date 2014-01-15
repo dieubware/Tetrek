@@ -23,15 +23,16 @@ public class TetrekGame extends Game {
 		TetrisGrid model = new TetrisGrid();
 
 		game = new GameScreen(this);
-		game.setTimeManager(new TimeManager(model));
-		ModelObserver mObs = new ModelObserver();
+		TimeManager tm = new TimeManager(model);
+		game.setTimeManager(tm);
+		ModelObserver mObs = new ModelObserver(tm);
 		ScoreObserver sObs = new ScoreObserver(game.getHudActor());
 		mObs.setGridActor(game.getGridActor(), game.getHudActor());
 		model.addObserver(mObs);
 		model.getScoreManager().addObserver(sObs);
 		setScreen(game);
 		game.getStage().addListener(new StageKeyListener(model, game.getWidth(), game.getHeight()));
-		model.startGame();
+		//model.startGame();
 		
 	}
 
