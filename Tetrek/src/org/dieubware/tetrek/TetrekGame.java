@@ -16,23 +16,20 @@ public class TetrekGame extends Game {
 	private GameScreen game;
 	//private TitleScreen title;
 	//private MapSelectionScreen mapSelection;
+	private GameInterface gameInterface;
+	
+	public TetrekGame() {
+		gameInterface = new GameInterface();
+	}
 	
 	@Override
 	public void create() {
 		//UnitGenerator.generate();
-		TetrisGrid model = new TetrisGrid();
 
 		game = new GameScreen(this);
-		TimeManager tm = new TimeManager(model);
-		game.setTimeManager(tm);
-		ModelObserver mObs = new ModelObserver(tm);
-		ScoreObserver sObs = new ScoreObserver(game.getHudActor());
-		mObs.setGridActor(game.getGridActor(), game.getHudActor());
-		model.addObserver(mObs);
-		model.getScoreManager().addObserver(sObs);
-		setScreen(game);
-		game.getStage().addListener(new StageKeyListener(model, game.getWidth(), game.getHeight()));
+		gameInterface.initGame(game);
 		//model.startGame();
+		setScreen(game);
 		
 	}
 

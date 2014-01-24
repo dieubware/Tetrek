@@ -36,10 +36,10 @@ public class GameScreen implements Screen {
 	private HUDActor hudActor;
 	private MenuActor menuActor;
 	private int hudWidth;
-	private boolean gameStarted;
+	private boolean gameRunning;
 	
-	public GameScreen(TetrekGame blokennGame) {
-		this.game = blokennGame;
+	public GameScreen(TetrekGame tetrekGame) {
+		this.game = tetrekGame;
 
 		w = Gdx.graphics.getWidth();
 		h = Gdx.graphics.getHeight();
@@ -50,11 +50,14 @@ public class GameScreen implements Screen {
 			hudSize = cellSize*4;
 		hudActor = new HUDActor(4,4,hudSize, hudSize);
 		menuActor = new MenuActor((int)w, (int)h);
+		stage = new Stage();
+		gameRunning = false;
+		
 	}
 
 	@Override
 	public void render(float delta) {
-		if(gameStarted) {
+		if(gameRunning) {
 			timeManager.addTime(delta);
 			if(Gdx.input.isKeyPressed(Keys.DOWN)
 					|| Gdx.input.isKeyPressed(Keys.RIGHT)
@@ -86,24 +89,25 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void show() {
-		w = Gdx.graphics.getWidth();
-		h = Gdx.graphics.getHeight();
 		
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, w, h);
 		
 		batch = new SpriteBatch();
 		
-		stage = new Stage();
+		
 		
 
+		stage.addActor(menuActor);
 		stage.addActor(gridActor);
 		stage.addActor(hudActor);
-		stage.addActor(menuActor);
+		
+		menuActor.setZIndex(99);
 		hudActor.setX(gridActor.getWidth());
 		hudActor.setY(h-hudActor.getHeight());
 
-		 Gdx.input.setInputProcessor(stage);
+
+		Gdx.input.setInputProcessor(stage);
 		
 	}
 
@@ -151,5 +155,17 @@ public class GameScreen implements Screen {
 	public HUDActor getHudActor() {
 		// TODO Auto-generated method stub
 		return hudActor;
+	}
+
+	public MenuActor getMenuActor() {
+		return menuActor;
+	}
+
+	public boolean isGameRunning() {
+		return gameRunning;
+	}
+
+	public void setGameRunning(boolean gameRunning) {
+		this.gameRunning = gameRunning;
 	}
 }

@@ -45,6 +45,9 @@ public class TetrisGrid extends Grid {
 	public boolean	setFall = false;
 	private boolean	moveFirst = false;
 	private boolean pieceChanged = true;
+	private boolean started = false;
+	private boolean paused = false;
+	private boolean lost = false;
 	
 	private ScoreManager scoreManager;
 	private int multiplier = 1;
@@ -75,8 +78,33 @@ public class TetrisGrid extends Grid {
 	 * Initializes the model when a game starts
 	 */
 	public void startGame() {
+		initGame();
 		addPiece(PieceType.random());
 		nextPieces.add(PieceType.random());
+		setChanged();
+		notifyObservers();
+		
+	}
+	
+	private void initGame() {
+		setMoveRight = false;
+		setMoveLeft = false;
+		setFall = false;
+		moveFirst = false;
+		pieceChanged = true;
+		started = true;
+		paused = false;
+		initGrid();
+		nextPieces.clear();
+		scoreManager.setOtherScore("level", 1);
+		scoreManager.setOtherScore("lines", 0);
+		scoreManager.setScore(0);
+	}
+	
+	public void setPause(boolean pause) {
+		paused = pause;
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
@@ -98,7 +126,10 @@ public class TetrisGrid extends Grid {
 	}
 
 	private void lost() {
-		Gdx.app.exit();
+		lost = true;
+		started = false;
+		setChanged();
+		notifyObservers();
 	}
 	
 	/**
@@ -264,7 +295,7 @@ public class TetrisGrid extends Grid {
 	/**
 	 * Rotates the current PIece if it is possible
 	 */
-	public void rotate() {
+	public void rotate(int direction) {
 		//Copy position array
 		Point[] originalPosition = new Point[currentPiece.points.length];
 		for(int i = 0; i< originalPosition.length; i++)
@@ -275,7 +306,7 @@ public class TetrisGrid extends Grid {
 			if(getIndex(p) != -1)
 				grid[getIndex(p)] = EMPTY;
 		}
-		currentPiece.rotate();
+		currentPiece.rotate(direction);
 		//Check if it's in the left border
 		while(currentPiece.isOutOfLeftBound(0)) {
 			currentPiece.move(1);
@@ -357,5 +388,23 @@ public class TetrisGrid extends Grid {
 
 	public int getLevel() {
 		return scoreManager.getOtherScore("level");
+	}
+
+
+	public boolean isStarted() {
+		return started;
+	}
+
+
+	public void setStarted(boolean started) {
+		this.started = started;
+	}
+	
+	public boolean isGameRunning() {
+		return started && !paused;
+	}
+	
+	public boolean isLost() {
+		return lost;
 	}
 }
