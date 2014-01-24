@@ -12,6 +12,7 @@ import org.dieubware.tetrek.model.TetrisPiece;
 import org.dieubware.tetrek.screen.GameScreen;
 import org.dieubware.jbrik.Grid;
 import org.dieubware.jbrik.Point;
+import org.dieubware.jbrik.ScoreManager;
 
 public class ModelObserver implements Observer {
 
@@ -44,8 +45,11 @@ public class ModelObserver implements Observer {
 			}
 			else {
 				System.out.println("Is lost ? " + ((TetrisGrid)grid).isLost());
-				if(((TetrisGrid)grid).isLost())
+				if(((TetrisGrid)grid).isLost()) {
+					ScoreManager sm = ((TetrisGrid)grid).getScoreManager();
+					gameScreen.getMenuActor().setScore(sm.getScore(), sm.getOtherScore("level"), sm.getOtherScore("lines"), ((TetrisGrid)grid).getHighScoreManager().getScore());
 					gameScreen.getMenuActor().setCurrentState(MenuActor.State.LOST);
+				}
 				else
 					gameScreen.getMenuActor().setCurrentState(MenuActor.State.NEW_GAME);
 				

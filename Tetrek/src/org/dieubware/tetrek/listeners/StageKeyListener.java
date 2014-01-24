@@ -32,13 +32,13 @@ public class StageKeyListener extends InputListener {
 				model.rotate(1);
 			else if(keycode == Input.Keys.DOWN)
 				model.setFall = true;
-			else if(keycode == Input.Keys.ESCAPE) {
+			else if(keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
 				model.setPause(true);
 			}
 			model.act();
 		}
 		else {
-			if(keycode == Input.Keys.ESCAPE) {
+			if(keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
 				if(!model.isStarted())
 					Gdx.app.exit();
 				else

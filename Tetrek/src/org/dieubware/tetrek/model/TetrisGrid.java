@@ -50,6 +50,7 @@ public class TetrisGrid extends Grid {
 	private boolean lost = false;
 	
 	private ScoreManager scoreManager;
+	private ScoreManager highScoreManager;
 	private int multiplier = 1;
 	
 	private List<PieceType> nextPieces;
@@ -61,6 +62,7 @@ public class TetrisGrid extends Grid {
 		scoreManager = new ScoreManager();
 
 		scoreManager.setOtherScore("level", 1);
+		highScoreManager = new ScoreManager();
 	}
 	
 
@@ -128,6 +130,10 @@ public class TetrisGrid extends Grid {
 	private void lost() {
 		lost = true;
 		started = false;
+		//Check highscore
+		if(scoreManager.getScore() > highScoreManager.getScore()) {
+			highScoreManager.setScore(scoreManager.getScore());
+		}
 		setChanged();
 		notifyObservers();
 	}
@@ -406,5 +412,11 @@ public class TetrisGrid extends Grid {
 	
 	public boolean isLost() {
 		return lost;
+	}
+
+
+	public ScoreManager getHighScoreManager() {
+		// TODO Auto-generated method stub
+		return highScoreManager;
 	}
 }
