@@ -49,7 +49,6 @@ public class GameScreen implements Screen {
 		if(cellSize < hudSize/4)
 			hudSize = cellSize*4;
 		hudActor = new HUDActor(4,4,hudSize, hudSize);
-		menuActor = new MenuActor((int)w, (int)h);
 		stage = new Stage();
 		gameRunning = false;
 		
@@ -167,5 +166,9 @@ public class GameScreen implements Screen {
 
 	public void setGameRunning(boolean gameRunning) {
 		this.gameRunning = gameRunning;
+	}
+	
+	public void setMenuActor(MenuActor menu) {
+		this.menuActor = menu;
 	}
 }

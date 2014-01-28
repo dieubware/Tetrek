@@ -38,9 +38,10 @@ public class MenuActor extends Table {
 	
 
 
-	public MenuActor(int width, int height) {
+	public MenuActor(int width, int height, int highscore) {
 		this.setWidth(width);
 		this.setHeight(height);
+		this.highscore = highscore;
 		shapeRenderer = new ShapeRenderer();
 		Sprite resumeSprite = new Sprite(new Texture("resume.png"));
 		Sprite newGameSprite = new Sprite(new Texture("newgame.png"));
@@ -72,7 +73,7 @@ public class MenuActor extends Table {
 		levelLabel = new Label("Score : ", labelStyle);
 		linesLabel = new Label("Score : ", labelStyle);
 		
-		highscoreLabel = new Label("Highscore : 0", bigLabelStyle);
+		highscoreLabel = new Label("Highscore : " + highscore, bigLabelStyle);
 		
 		resume = new Button(resumeDrawable);
 		newGame = new Button(newGameDrawable);

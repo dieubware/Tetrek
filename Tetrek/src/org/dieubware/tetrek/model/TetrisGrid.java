@@ -63,6 +63,7 @@ public class TetrisGrid extends Grid {
 
 		scoreManager.setOtherScore("level", 1);
 		highScoreManager = new ScoreManager();
+		highScoreManager.setScore(SaveManager.loadScore());
 	}
 	
 
@@ -133,6 +134,7 @@ public class TetrisGrid extends Grid {
 		//Check highscore
 		if(scoreManager.getScore() > highScoreManager.getScore()) {
 			highScoreManager.setScore(scoreManager.getScore());
+			SaveManager.saveScore(highScoreManager.getScore());
 		}
 		setChanged();
 		notifyObservers();

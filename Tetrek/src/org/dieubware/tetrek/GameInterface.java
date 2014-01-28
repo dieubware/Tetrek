@@ -1,5 +1,6 @@
 package org.dieubware.tetrek;
 
+import org.dieubware.tetrek.actors.MenuActor;
 import org.dieubware.tetrek.listeners.MenuButtonListener;
 import org.dieubware.tetrek.listeners.StageKeyListener;
 import org.dieubware.tetrek.model.TetrisGrid;
@@ -24,7 +25,8 @@ public class GameInterface {
 		
 		gameScreen = game;
 		model = new TetrisGrid();
-		
+
+		game.setMenuActor(new MenuActor(game.getWidth(), game.getHeight(), model.getHighScoreManager().getScore()));
 		timeManager = new TimeManager(model);
 		
 		game.setTimeManager(timeManager);
