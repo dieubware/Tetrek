@@ -12,6 +12,7 @@ public class StageKeyListener extends InputListener {
 	private TetrisGrid model;
 	private int width, height;
 	private boolean activated;
+	private float originX, originY;
 
 	public StageKeyListener(TetrisGrid model, int width, int height) {
 		this.model = model;
@@ -38,14 +39,14 @@ public class StageKeyListener extends InputListener {
 			model.act();
 		}
 		else {
-			if(keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
-				if(!model.isStarted())
-					Gdx.app.exit();
-				else
-					model.setPause(false);
+			if(keycode == Input.Keys.ESCAPE && model.isStarted()) {
+				model.setPause(false);
+			}
+			else if(keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
+				Gdx.app.exit();
 			}
 		}
-		return false;
+		return true;
 	}
 
 	@Override
@@ -65,8 +66,11 @@ public class StageKeyListener extends InputListener {
 
 	@Override
 	public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-		System.out.println("clicked on : " + event.getListenerActor());
+		
 		if(model.isGameRunning()){
+			System.out.println("touch down");
+			originX = x;
+			originY = y;
 			if(y > (2*height)/3) {
 				if(x < width/2)
 					model.rotate(-1);
@@ -81,21 +85,22 @@ public class StageKeyListener extends InputListener {
 				model.setMoveRight = true;
 			model.act();
 		}
-		return false;
+		return true;
 	}
 
 	@Override
 	public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-		if(model.isStarted()){
-			if(y < height/6)
+		//if(model.isStarted()){
+		System.out.println("touch up");
+			if(originY < height/6)
 				model.setFall = false;
-			else if(x > width/2)
+			else if(originX > width/2)
 				model.setMoveRight = false;
 			else 
 				model.setMoveLeft = false;
 	
 			model.setMoveFirst(false);
-		}
+		//}
 	}
 
 	public boolean isActivated() {

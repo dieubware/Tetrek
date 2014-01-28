@@ -25,7 +25,7 @@ public class TetrekGame extends Game {
 	@Override
 	public void create() {
 		//UnitGenerator.generate();
-
+		Gdx.input.setCatchBackKey(true);
 		game = new GameScreen(this);
 		gameInterface.initGame(game);
 		//model.startGame();

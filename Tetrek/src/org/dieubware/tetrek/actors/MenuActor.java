@@ -25,13 +25,15 @@ public class MenuActor extends Table {
 
 	private ShapeRenderer shapeRenderer;
 	private Button resume, newGame, settings;
-	private Image lost;
+	private Image upImage;
+	Drawable lostDrawable, newHighscoreDrawable;
 	private BitmapFont font;
 	private BitmapFont bigFont;
 	private Label scoreLabel;
 	private Label highscoreLabel;
 	private Label linesLabel;
 	private Label levelLabel;
+	private int highscore = 0;
 	public enum State {NEW_GAME, LOST, PAUSE}
 	
 
@@ -40,14 +42,28 @@ public class MenuActor extends Table {
 		this.setWidth(width);
 		this.setHeight(height);
 		shapeRenderer = new ShapeRenderer();
-		Drawable resumeDrawable = new SpriteDrawable(new Sprite(new Texture("resume.png")));
-		Drawable newGameDrawable = new SpriteDrawable(new Sprite(new Texture("newgame.png")));
-		Drawable settingsDrawable = new SpriteDrawable(new Sprite(new Texture("settings.png")));
-		Drawable lostDrawable = new SpriteDrawable(new Sprite(new Texture("youlost.png")));
-
+		Sprite resumeSprite = new Sprite(new Texture("resume.png"));
+		Sprite newGameSprite = new Sprite(new Texture("newgame.png"));
+		Sprite settingsSprite = new Sprite(new Texture("settings.png"));
+		Sprite bgsprite = new Sprite(new Texture("greybg.png"));
+		Drawable bgdrawable = new SpriteDrawable(bgsprite);
+		setBackground(bgdrawable);
+		/*
+		resizeActor(resumeSprite);
+		resizeActor(newGameSprite);
+		resizeActor(settingsSprite);
+		*/
+		Drawable resumeDrawable = new SpriteDrawable(resumeSprite);
+		Drawable newGameDrawable = new SpriteDrawable(newGameSprite);
+		Drawable settingsDrawable = new SpriteDrawable(settingsSprite);
+		lostDrawable = new SpriteDrawable(new Sprite(new Texture("youlost.png")));
+		newHighscoreDrawable = new SpriteDrawable(new Sprite(new Texture("highscore.png")));
+		
+		
 		font = new BitmapFont();
 		bigFont = new BitmapFont();
-		bigFont.setScale(2f);
+		bigFont.setScale(1.5f);
+		
 		Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
 		Label.LabelStyle bigLabelStyle = new Label.LabelStyle(bigFont, Color.WHITE);
 		
@@ -61,15 +77,21 @@ public class MenuActor extends Table {
 		resume = new Button(resumeDrawable);
 		newGame = new Button(newGameDrawable);
 		settings = new Button(settingsDrawable);
-		lost = new Image(lostDrawable);
+		upImage = new Image(lostDrawable);
 		
-		int i = 0;
-		resume.setPosition(width/2-resume.getWidth()/2, height/2 - i*resume.getHeight());
-		i++;
-		newGame.setPosition(width/2-newGame.getWidth()/2, height/2 - i*newGame.getHeight());
-		i++;
-		settings.setPosition(width/2-settings.getWidth()/2, height/2 - i*settings.getHeight());
-		this.add(lost);
+		newGame.setBackground(newGameDrawable);
+		float maxWidth = settings.getWidth();
+		float maxHeight = settings.getHeight();
+		if(settings.getWidth() > ((2*getWidth())/3)) {
+			maxWidth = ((2*getWidth())/3);
+			float scale = maxWidth/settings.getWidth();
+			maxHeight = settings.getHeight()*scale;
+		}
+		
+		System.out.println(settings.getWidth() + ", " + settings.getHeight() );
+		
+		
+		this.add(upImage);
 		row();
 		this.add(scoreLabel);
 		row();
@@ -79,14 +101,16 @@ public class MenuActor extends Table {
 		row();
 		this.add(highscoreLabel);
 		row();
-		this.add(resume);
+		this.add(resume).width(maxWidth).height(maxHeight);
 		row();
-		this.add(newGame);
+		this.add(newGame).width(maxWidth).height(maxHeight);
 		row();
-		this.add(settings);
+		this.add(settings).width(maxWidth).height(maxHeight);
+		System.out.println("X : "+ settings.getX() + ", Y : " + settings.getY());
 		setCurrentState(State.NEW_GAME);
 	}
 	
+
 
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
@@ -124,6 +148,13 @@ public class MenuActor extends Table {
 		this.linesLabel.setText("Lines : "+lines);
 		this.levelLabel.setText("Level : "+level);
 		this.highscoreLabel.setText("Highscore : "+highscore);
+		if(highscore > this.highscore) {
+			this.highscore = highscore;
+			this.upImage.setDrawable(newHighscoreDrawable);
+		}
+		else {
+			this.upImage.setDrawable(lostDrawable);
+		}
 		
 	}
 
@@ -132,7 +163,7 @@ public class MenuActor extends Table {
 			resume.setVisible(true);
 			newGame.setVisible(true);
 			settings.setVisible(true);
-			lost.setVisible(false);
+			upImage.setVisible(false);
 			scoreLabel.setVisible(false);
 			linesLabel.setVisible(false);
 			levelLabel.setVisible(false);
@@ -143,14 +174,14 @@ public class MenuActor extends Table {
 			newGame.setVisible(true);
 			settings.setVisible(true);
 			if(currentState == State.LOST) {
-				lost.setVisible(true);
+				upImage.setVisible(true);
 				scoreLabel.setVisible(true);
 				linesLabel.setVisible(true);
 				levelLabel.setVisible(true);
 				highscoreLabel.setVisible(true);
 			}
 			else {
-				lost.setVisible(false);
+				upImage.setVisible(false);
 				scoreLabel.setVisible(false);
 				linesLabel.setVisible(false);
 				levelLabel.setVisible(false);

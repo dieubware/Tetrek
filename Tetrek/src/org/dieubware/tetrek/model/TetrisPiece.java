@@ -325,7 +325,7 @@ public class TetrisPiece {
 	 */
 	public void rotate(int direction) {
 
-		rotation = (rotation + direction)%pieceType.rotations;
+		rotation = Math.abs((rotation + direction)%pieceType.rotations);
 		int centerX = points[1].x;
 		int centerY = points[1].y;
 		switch(pieceType) {
