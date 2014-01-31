@@ -1,6 +1,6 @@
 package org.dieubware.tetrek.actors;
 
-import org.dieubware.tetrek.model.TetrisGrid;
+import org.dieubware.tetrek.model.BlockFallGrid;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -92,28 +92,28 @@ public class GridActor extends Actor {
 	public Color getColor(int gridColor) {
 		Color realColor = null;
 		switch(gridColor) {
-			case TetrisGrid.BLUE:
+			case BlockFallGrid.BLUE:
 				realColor = Color.BLUE;
 				break;
-			case TetrisGrid.CYAN:
+			case BlockFallGrid.CYAN:
 				realColor = Color.CYAN;
 				break;
-			case TetrisGrid.EMPTY:
+			case BlockFallGrid.EMPTY:
 				realColor= Color.BLACK;
 				break;
-			case TetrisGrid.LIME:
+			case BlockFallGrid.LIME:
 				realColor = Color.GREEN;
 				break;
-			case TetrisGrid.MAGENTA:
+			case BlockFallGrid.MAGENTA:
 				realColor = Color.MAGENTA;
 				break;
-			case TetrisGrid.ORANGE:
+			case BlockFallGrid.ORANGE:
 				realColor = Color.ORANGE;
 				break;
-			case TetrisGrid.RED:
+			case BlockFallGrid.RED:
 				realColor = Color.RED;
 				break;
-			case TetrisGrid.YELLOW:
+			case BlockFallGrid.YELLOW:
 				realColor = Color.YELLOW;
 				break;
 		}

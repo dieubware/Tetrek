@@ -7,8 +7,8 @@ import org.dieubware.tetrek.TimeManager;
 import org.dieubware.tetrek.actors.GridActor;
 import org.dieubware.tetrek.actors.HUDActor;
 import org.dieubware.tetrek.actors.MenuActor;
-import org.dieubware.tetrek.model.TetrisGrid;
-import org.dieubware.tetrek.model.TetrisPiece;
+import org.dieubware.tetrek.model.BlockFallGrid;
+import org.dieubware.tetrek.model.BlockPiece;
 import org.dieubware.tetrek.screen.GameScreen;
 import org.dieubware.jbrik.Grid;
 import org.dieubware.jbrik.Point;
@@ -36,18 +36,18 @@ public class ModelObserver implements Observer {
 	public void update(Observable o, Object arg1) {
 		Grid grid = (Grid)o;
 		gridActor.setGrid(grid.getArray());
-		if(((TetrisGrid)grid).isGameRunning() != gameScreen.isGameRunning()) {
+		if(((BlockFallGrid)grid).isGameRunning() != gameScreen.isGameRunning()) {
 			
-			gameScreen.setGameRunning(((TetrisGrid)grid).isGameRunning());
+			gameScreen.setGameRunning(((BlockFallGrid)grid).isGameRunning());
 			gameScreen.getMenuActor().setVisible(!gameScreen.isGameRunning());
-			if(((TetrisGrid)grid).isStarted()) {
+			if(((BlockFallGrid)grid).isStarted()) {
 				gameScreen.getMenuActor().setCurrentState(MenuActor.State.PAUSE);
 			}
 			else {
-				System.out.println("Is lost ? " + ((TetrisGrid)grid).isLost());
-				if(((TetrisGrid)grid).isLost()) {
-					ScoreManager sm = ((TetrisGrid)grid).getScoreManager();
-					gameScreen.getMenuActor().setScore(sm.getScore(), sm.getOtherScore("level"), sm.getOtherScore("lines"), ((TetrisGrid)grid).getHighScoreManager().getScore());
+				System.out.println("Is lost ? " + ((BlockFallGrid)grid).isLost());
+				if(((BlockFallGrid)grid).isLost()) {
+					ScoreManager sm = ((BlockFallGrid)grid).getScoreManager();
+					gameScreen.getMenuActor().setScore(sm.getScore(), sm.getOtherScore("level"), sm.getOtherScore("lines"), ((BlockFallGrid)grid).getHighScoreManager().getScore());
 					gameScreen.getMenuActor().setCurrentState(MenuActor.State.LOST);
 				}
 				else
@@ -55,17 +55,16 @@ public class ModelObserver implements Observer {
 				
 			}
 		}
-		if(((TetrisGrid)grid).isPieceChanged()) {
+		if(((BlockFallGrid)grid).isPieceChanged()) {
 			
 			int[] intGrid = new int[16];
-			TetrisPiece piece = new TetrisPiece();
-			piece.initPiece(((TetrisGrid)grid).getNextPieces().get(0), 1, 4);
-			for(Point p : piece.points) {
-				intGrid[p.y*4 + p.x] = piece.getPieceColor();
+			BlockPiece nextPiece = ((BlockFallGrid)grid).getNextPieces().get(0);
+			for(Point p : nextPiece.points) {
+				intGrid[p.y*4 + p.x] = nextPiece.getPieceColor();
 			}
 			hudActor.setGrid(intGrid);
-			((TetrisGrid)grid).setPieceChanged(false);
-			level = ((TetrisGrid)grid).getLevel();
+			((BlockFallGrid)grid).setPieceChanged(false);
+			level = ((BlockFallGrid)grid).getLevel();
 			if(level < 10) {
 				timeManager.setLevel(level);
 			}

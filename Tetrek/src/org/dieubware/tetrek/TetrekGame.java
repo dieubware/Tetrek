@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Scaling;
 
 import org.dieubware.tetrek.listeners.StageKeyListener;
-import org.dieubware.tetrek.model.TetrisGrid;
+import org.dieubware.tetrek.model.BlockFallGrid;
 import org.dieubware.tetrek.observers.ModelObserver;
 import org.dieubware.tetrek.observers.ScoreObserver;
 import org.dieubware.tetrek.screen.GameScreen;

@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.dieubware.jbrik.Grid;
 import org.dieubware.tetrek.TimeManager;
-import org.dieubware.tetrek.model.TetrisPiece.PieceType;
 
 import com.badlogic.gdx.Gdx;
 
@@ -22,7 +21,7 @@ import com.badlogic.gdx.Gdx;
  * X : 0 is left, 9 is right
  * Y : 21 is up, 0 is bottom
  */
-public class TetrisGrid extends Grid {
+public abstract class BlockFallGrid extends Grid {
 
 
 
@@ -39,26 +38,26 @@ public class TetrisGrid extends Grid {
 	public static final int RED = 7;
 	
 
-	public TetrisPiece currentPiece;
+	public BlockPiece currentPiece;
 	public boolean	setMoveRight = false;
 	public boolean	setMoveLeft = false;
 	public boolean	setFall = false;
 	private boolean	moveFirst = false;
-	private boolean pieceChanged = true;
+	protected boolean pieceChanged = true;
 	private boolean started = false;
 	private boolean paused = false;
 	private boolean lost = false;
 	
-	private ScoreManager scoreManager;
-	private ScoreManager highScoreManager;
-	private int multiplier = 1;
+	protected ScoreManager scoreManager;
+	protected ScoreManager highScoreManager;
+	protected int multiplier = 1;
 	
-	private List<PieceType> nextPieces;
+	protected List<BlockPiece> nextPieces;
 
-	public TetrisGrid() {
+	public BlockFallGrid() {
 		super(1, WIDTH, HEIGHT, false);
-		currentPiece = new TetrisPiece();
-		nextPieces = new ArrayList<PieceType>();
+		nextPieces = new ArrayList<BlockPiece>();
+		
 		scoreManager = new ScoreManager();
 
 		scoreManager.setOtherScore("level", 1);
@@ -82,14 +81,13 @@ public class TetrisGrid extends Grid {
 	 */
 	public void startGame() {
 		initGame();
-		addPiece(PieceType.random());
-		nextPieces.add(PieceType.random());
+		addPiece();
 		setChanged();
 		notifyObservers();
 		
 	}
 	
-	private void initGame() {
+	protected void initGame() {
 		setMoveRight = false;
 		setMoveLeft = false;
 		setFall = false;
@@ -114,10 +112,11 @@ public class TetrisGrid extends Grid {
 	 * Adds a piece at the top of the screen
 	 * @param piece piece type
 	 */
-	public void addPiece(PieceType piece) {
+	public void addPiece() {
 		int originX = WIDTH/2;
-		currentPiece.initPiece(piece, originX, HEIGHT);
-
+		
+		currentPiece.initNextPiece(nextPieces.get(0), originX, HEIGHT);
+		nextPieces.get(0).initRandomPiece(1, 4);
 		//Put the piece in the grid
 		for(int i = 0; i<currentPiece.points.length; i++) {
 			if(grid[getIndex(currentPiece.points[i])] != EMPTY) {
@@ -199,36 +198,13 @@ public class TetrisGrid extends Grid {
 
 	}
 
-	private void endOfPiece() {
-
-		int nbLines = this.checkForLines();
-		if(nbLines == 0) {
-			multiplier = 1;
-		}
-		else {
-			multiplier+=nbLines;
-			scoreManager.addOtherScore("lines", nbLines);
-			scoreManager.addScore(10*nbLines*multiplier);
-		
-			int level = scoreManager.getOtherScore("level");
-			if(scoreManager.getOtherScore("lines") > level*(10+level)) {
-				scoreManager.addOtherScore("level", 1);
-			}
-			
-		}
-		addPiece(nextPieces.get(0));
-		nextPieces.add(0, PieceType.random());
-		pieceChanged = true;
-		setFall= false;
-		
-	}
-
+	protected abstract void endOfPiece();
 	/**
 	 * Determines if the given piece can fall down
 	 * @param piece chosen piece
 	 * @return true if the piece can fall, false otherwise
 	 */
-	private boolean canFall(TetrisPiece piece) {
+	private boolean canFall(BlockPiece piece) {
 		boolean canFall = true;
 		for(Point p : piece.minYPoints()) {
 			int pointIndex = getIndex(p.x, p.y-1);
@@ -265,7 +241,7 @@ public class TetrisGrid extends Grid {
 	 * @param direction distance to move. Negative : left, positive : right
 	 * @return
 	 */
-	private boolean movePiece(TetrisPiece piece, int direction) {
+	private boolean movePiece(BlockPiece piece, int direction) {
 		boolean ret = true;
 		if(piece.maxX() + direction >= WIDTH
 				|| piece.minX() + direction < 0)
@@ -385,7 +361,7 @@ public class TetrisGrid extends Grid {
 		this.pieceChanged = pieceChanged;
 	}
 
-	public List<PieceType> getNextPieces() {
+	public List<BlockPiece> getNextPieces() {
 		// TODO Auto-generated method stub
 		return nextPieces;
 	}

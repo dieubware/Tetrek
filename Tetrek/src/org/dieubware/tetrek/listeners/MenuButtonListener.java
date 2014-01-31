@@ -1,7 +1,7 @@
 package org.dieubware.tetrek.listeners;
 
 import org.dieubware.tetrek.actors.MenuActor;
-import org.dieubware.tetrek.model.TetrisGrid;
+import org.dieubware.tetrek.model.BlockFallGrid;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -10,10 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class MenuButtonListener extends ClickListener {
 
-	private TetrisGrid model;
+	private BlockFallGrid model;
 	private MenuActor actor;
 	
-	public MenuButtonListener(TetrisGrid model, MenuActor actor) {
+	public MenuButtonListener(BlockFallGrid model, MenuActor actor) {
 		super();
 		this.model = model;
 		this.actor = actor;

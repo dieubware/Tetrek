@@ -3,7 +3,8 @@ package org.dieubware.tetrek;
 import org.dieubware.tetrek.actors.MenuActor;
 import org.dieubware.tetrek.listeners.MenuButtonListener;
 import org.dieubware.tetrek.listeners.StageKeyListener;
-import org.dieubware.tetrek.model.TetrisGrid;
+import org.dieubware.tetrek.model.BlockFallGrid;
+import org.dieubware.tetrek.model.TetrekGrid;
 import org.dieubware.tetrek.observers.ModelObserver;
 import org.dieubware.tetrek.observers.ScoreObserver;
 import org.dieubware.tetrek.screen.GameScreen;
@@ -11,7 +12,7 @@ import org.dieubware.tetrek.screen.GameScreen;
 public class GameInterface {
 
 	private GameScreen gameScreen;
-	private TetrisGrid model;
+	private BlockFallGrid model;
 	private TimeManager timeManager; 
 	
 	//Observers
@@ -24,7 +25,7 @@ public class GameInterface {
 	public void initGame(GameScreen game) {
 		
 		gameScreen = game;
-		model = new TetrisGrid();
+		model = new TetrekGrid();
 
 		game.setMenuActor(new MenuActor(game.getWidth(), game.getHeight(), model.getHighScoreManager().getScore()));
 		timeManager = new TimeManager(model);

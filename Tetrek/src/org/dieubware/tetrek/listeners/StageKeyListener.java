@@ -1,6 +1,6 @@
 package org.dieubware.tetrek.listeners;
 
-import org.dieubware.tetrek.model.TetrisGrid;
+import org.dieubware.tetrek.model.BlockFallGrid;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,12 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 public class StageKeyListener extends InputListener {
 
-	private TetrisGrid model;
+	private BlockFallGrid model;
 	private int width, height;
 	private boolean activated;
 	private float originX, originY;
 
-	public StageKeyListener(TetrisGrid model, int width, int height) {
+	public StageKeyListener(BlockFallGrid model, int width, int height) {
 		this.model = model;
 		this.width = width;
 		this.height = height;
